@@ -1,16 +1,46 @@
-# weather_app
+# 🌤 Weather App
 
-A new Flutter project.
+A simple weather app that fetches real-time weather data from an API and displays it in an intuitive UI.
 
-## Getting Started
+## 🚀 Features
+- 🌍 Get current weather based on location
+- 📍 Search for weather in any city
+- 🌡 Displays temperature, humidity, wind speed, and more
+- 🎨 Clean and responsive UI
+- 🔄 Auto-refresh weather data
 
-This project is a starting point for a Flutter application.
+## 🛠 Tech Stack
+- **Frontend:** Flutter
+- **Backend:** Weather API (e.g., OpenWeatherMap, WeatherAPI)
 
-A few resources to get you started if this is your first Flutter project:
+## 📦 Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Mustafa-Mohamed26/weather_app.git
+   ```
+2. Navigate to the project folder:
+   ```bash
+   cd weather_app
+   ```
+3. Install dependencies:
+   ```bash
+   flutter pub get
+   ```
+4. Run the app:
+   ```bash
+   flutter run
+   ```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🔑 API Setup
+1. Get an API key from [OpenWeatherMap](https://openweathermap.org/api) or another weather API provider.
+2. Add your API key in the project’s configuration file (e.g., `config.dart`).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📸 Screenshots
+_Add screenshots of your app here._
+
+## 🤝 Contributing
+Feel free to fork this project and submit pull requests!
+
+## 📜 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
