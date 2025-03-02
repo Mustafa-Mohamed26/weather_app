@@ -15,6 +15,10 @@ class Weather{
     );
   }
 
+  /// Converts this object to a JSON encodable map.
+  ///
+  /// Returns a map of the object's properties, suitable for encoding as JSON.
+  ///
   Map<String, dynamic> toJson(){
     return {
       'id': id,

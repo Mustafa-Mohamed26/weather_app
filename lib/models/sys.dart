@@ -15,6 +15,11 @@ class Sys {
     );
   }
 
+  /// Converts [Sys] object to a map.
+  ///
+  /// The generated map has four key-value pairs, where the keys are
+  /// 'country', 'sunrise', 'sunset', and 'id', and the values are the
+  /// corresponding properties of this object.
   Map<String, dynamic> toJson() {
     return {
       'country': country,

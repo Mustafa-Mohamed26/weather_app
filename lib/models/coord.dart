@@ -11,6 +11,9 @@ class Coord{
     );
   }
 
+  /// Converts the Coord object to a json compatible map
+  ///
+  /// Returns a map with keys 'lon' and 'lat' with the corresponding values.
   Map<String, dynamic> toJson(){
     return {
       'lon': lon,

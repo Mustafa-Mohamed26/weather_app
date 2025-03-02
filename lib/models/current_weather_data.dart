@@ -32,6 +32,14 @@ class CurrentWeatherData {
       this.name,
       this.cod});
 
+  /// Converts the current weather data to a JSON-encodable map.
+  ///
+  /// This can be used to send the current weather data to a server, or to
+  /// convert it to a JSON string for storage or display.
+  ///
+  /// The keys of the returned map are the same as the fields in the
+  /// [CurrentWeatherData] constructor, and the values are the same as the
+  /// values of the corresponding fields.
   Map<String, dynamic> toJson() {
     return {
       'coord': coord,

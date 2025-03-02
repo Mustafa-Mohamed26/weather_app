@@ -32,6 +32,10 @@ class MainWeather {
     );
   }
 
+  /// Converts the MainWeather instance into a JSON map where each key maps
+  /// to the corresponding property of the weather data. This map can be used
+  /// for serialization purposes.
+
   Map<String, dynamic> toJson() {
     return {
       'temp': temp,

@@ -11,6 +11,11 @@ class FiveDaysData {
     );
   }
 
+  /// Converts this [FiveDaysData] to a JSON encodable map.
+  ///
+  /// The map will have the following structure:
+  ///
+  /// 
   Map<String, dynamic> toJson() {
     return {
       'dt_txt': dateTime,

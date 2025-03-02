@@ -13,6 +13,9 @@ class Wind {
     );
   }
 
+  /// Converts the Wind object to a json compatible map
+  ///
+  /// Returns a map with keys 'speed', 'deg', and 'gust' with the corresponding values.
   Map<String, dynamic> toJson() {
     return {
       'speed': speed,
