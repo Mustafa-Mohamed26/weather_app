@@ -21,7 +21,7 @@ class ApiRepository {
   ///
   /// [onError] is called if the request fails. The error is passed as an
   /// argument.
-  void get({
+  void getData({
     Function()? beforeSend,
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
