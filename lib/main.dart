@@ -34,7 +34,7 @@ class _WeatherAppState extends State<WeatherApp> {
     final url =
         "https://api.openweathermap.org/data/2.5/weather?q=$country&appid=$apiKey&units=metric";
     final response = await http.get(Uri.parse(url));
-    
+
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
@@ -120,8 +120,10 @@ class _WeatherAppState extends State<WeatherApp> {
                   itemCount: countries.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      leading: Text(countries[index]['flag']!, style: TextStyle(fontSize: 24)),
-                      title: Text(countries[index]['name']!, style: TextStyle(fontSize: 18)),
+                      leading: Text(countries[index]['flag']!,
+                          style: TextStyle(fontSize: 24)),
+                      title: Text(countries[index]['name']!,
+                          style: TextStyle(fontSize: 18)),
                       onTap: () {
                         setState(() {
                           country = countries[index]['name']!;
