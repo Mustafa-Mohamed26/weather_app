@@ -1,0 +1,2 @@
+D:/My programming projects/VS Code/Flutter/weather_app/android/app/.cxx/Debug/1c5z55i1/x86_64/CMakeFiles/edit_cache.dir
+D:/My programming projects/VS Code/Flutter/weather_app/android/app/.cxx/Debug/1c5z55i1/x86_64/CMakeFiles/rebuild_cache.dir
