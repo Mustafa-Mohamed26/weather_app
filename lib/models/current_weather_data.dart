@@ -3,6 +3,7 @@ import 'package:weather_app/models/coord.dart';
 import 'package:weather_app/models/main_weather.dart';
 import 'package:weather_app/models/sys.dart';
 import 'package:weather_app/models/weather.dart';
+import 'package:weather_app/models/wind.dart';
 
 class CurrentWeatherData {
   Coord? coord;
@@ -10,6 +11,7 @@ class CurrentWeatherData {
   String? base;
   MainWeather? mainWeather;
   int? visibility;
+  Wind? wind;
   Clouds? clouds;
   int? dt;
   Sys? sys;
@@ -24,6 +26,7 @@ class CurrentWeatherData {
       this.base,
       this.mainWeather,
       this.visibility,
+      this.wind,
       this.clouds,
       this.dt,
       this.sys,
@@ -42,14 +45,15 @@ class CurrentWeatherData {
   /// values of the corresponding fields.
   Map<String, dynamic> toJson() {
     return {
-      'coord': coord,
-      'weather': weather,
+      'coord': coord?.toJson(),
+      'weather': weather?.map((e) => e.toJson()).toList(),
       'base': base,
-      'main': mainWeather,
+      'main': mainWeather?.toJson(),
       'visibility': visibility,
-      'clouds': clouds,
+      'wind': wind?.toJson(),
+      'clouds': clouds?.toJson(),
       'dt': dt,
-      'sys': sys,
+      'sys': sys?.toJson(),
       'timezone': timezone,
       'id': id,
       'name': name,
@@ -67,6 +71,7 @@ class CurrentWeatherData {
       mainWeather:
           json['main'] != null ? MainWeather.fromJson(json['main']) : null,
       visibility: json['visibility'],
+      wind: json['wind'] != null ? Wind.fromJson(json['wind']) : null,
       clouds: json['clouds'] != null ? Clouds.fromJson(json['clouds']) : null,
       dt: json['dt'],
       sys: json['sys'] != null ? Sys.fromJson(json['sys']) : null,
