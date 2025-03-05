@@ -1,50 +1,44 @@
-// ignore_for_file: non_constant_identifier_names
-class MainWeather {
-  double? temp,
-      fells_like,
-      temp_min,
-      temp_max,
-      pressure,
-      humidity,
-      sea_level,
-      grnd_level;
-  MainWeather(
+class Main {
+  double? temp;
+  double? feelsLike;
+  double? tempMin;
+  double? tempMax;
+  int? pressure;
+  int? humidity;
+  int? seaLevel;
+  int? grndLevel;
+
+  Main(
       {this.temp,
-      this.fells_like,
-      this.temp_min,
-      this.temp_max,
+      this.feelsLike,
+      this.tempMin,
+      this.tempMax,
       this.pressure,
       this.humidity,
-      this.sea_level,
-      this.grnd_level});
+      this.seaLevel,
+      this.grndLevel});
 
-  factory MainWeather.fromJson(Map<String, dynamic> json) {
-    return MainWeather(
-      temp: json['temp'],
-      fells_like: json['fells_like'],
-      temp_min: json['temp_min'],
-      temp_max: json['temp_max'],
-      pressure: json['pressure'],
-      humidity: json['humidity'],
-      sea_level: json['sea_level'],
-      grnd_level: json['grnd_level'],
-    );
+  Main.fromJson(Map<String, dynamic> json) {
+    temp = json['temp'];
+    feelsLike = json['feels_like'];
+    tempMin = json['temp_min'];
+    tempMax = json['temp_max'];
+    pressure = json['pressure'];
+    humidity = json['humidity'];
+    seaLevel = json['sea_level'];
+    grndLevel = json['grnd_level'];
   }
 
-  /// Converts the MainWeather instance into a JSON map where each key maps
-  /// to the corresponding property of the weather data. This map can be used
-  /// for serialization purposes.
-
   Map<String, dynamic> toJson() {
-    return {
-      'temp': temp,
-      'fells_like': fells_like,
-      'temp_min': temp_min,
-      'temp_max': temp_max,
-      'pressure': pressure,
-      'humidity': humidity,
-      'sea_level': sea_level,
-      'grnd_level': grnd_level,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['temp'] = this.temp;
+    data['feels_like'] = this.feelsLike;
+    data['temp_min'] = this.tempMin;
+    data['temp_max'] = this.tempMax;
+    data['pressure'] = this.pressure;
+    data['humidity'] = this.humidity;
+    data['sea_level'] = this.seaLevel;
+    data['grnd_level'] = this.grndLevel;
+    return data;
   }
 }

@@ -1,27 +1,21 @@
 class Wind {
   double? speed;
-  double? deg;
+  int? deg;
   double? gust;
 
   Wind({this.speed, this.deg, this.gust});
 
-  factory Wind.fromJson(Map<String, dynamic> json) {
-    return Wind(
-      speed: json['speed']?.toDouble(),
-      deg: json['deg']?.toDouble(),
-      gust: json['gust']?.toDouble(),
-    );
+  Wind.fromJson(Map<String, dynamic> json) {
+    speed = json['speed'];
+    deg = json['deg'];
+    gust = json['gust'];
   }
 
-  /// Converts the Wind object to a json compatible map
-  ///
-  /// Returns a map with keys 'speed', 'deg', and 'gust' with the corresponding values.
   Map<String, dynamic> toJson() {
-    return {
-      'speed': speed,
-      'deg': deg,
-      'gust': gust,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['speed'] = this.speed;
+    data['deg'] = this.deg;
+    data['gust'] = this.gust;
+    return data;
   }
-
 }

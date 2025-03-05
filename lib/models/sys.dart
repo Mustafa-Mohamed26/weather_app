@@ -1,31 +1,27 @@
 class Sys {
+  int? type;
+  int? id;
   String? country;
   int? sunrise;
   int? sunset;
-  int? id;
 
-  Sys({this.country, this.sunrise, this.sunset, this.id});
+  Sys({this.type, this.id, this.country, this.sunrise, this.sunset});
 
-  factory Sys.fromJson(Map<String, dynamic> json) {
-    return Sys(
-      country: json['country'],
-      sunrise: json['sunrise'],
-      sunset: json['sunset'],
-      id: json['id'],
-    );
+  Sys.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    id = json['id'];
+    country = json['country'];
+    sunrise = json['sunrise'];
+    sunset = json['sunset'];
   }
 
-  /// Converts [Sys] object to a map.
-  ///
-  /// The generated map has four key-value pairs, where the keys are
-  /// 'country', 'sunrise', 'sunset', and 'id', and the values are the
-  /// corresponding properties of this object.
   Map<String, dynamic> toJson() {
-    return {
-      'country': country,
-      'sunrise': sunrise,
-      'sunset': sunset,
-      'id': id,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['id'] = this.id;
+    data['country'] = this.country;
+    data['sunrise'] = this.sunrise;
+    data['sunset'] = this.sunset;
+    return data;
   }
 }
