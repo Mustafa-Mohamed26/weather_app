@@ -9,12 +9,13 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => WeatherProvider()),
       ],
-      child: MyApp(),
+      child: WeatherApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class WeatherApp extends StatelessWidget {
+  const WeatherApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

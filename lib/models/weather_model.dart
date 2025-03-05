@@ -31,4 +31,17 @@ class WeatherModel {
       sunset: json["sys"]["sunset"],
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'city': city,
+      'temperature': temperature,
+      'description': description,
+      'icon': icon,
+      'humidity': humidity,
+      'windSpeed': windSpeed,
+      'sunrise': sunrise,
+      'sunset': sunset,
+    };
+  }
 }

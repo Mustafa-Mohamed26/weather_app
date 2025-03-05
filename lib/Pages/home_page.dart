@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart'; // Import intl package
 import '../providers/weather_provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -8,6 +9,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final weatherProvider = Provider.of<WeatherProvider>(context);
+
+    // Get the current date and format it
+    String formattedDate = DateFormat('EEEE, MMMM d, yyyy').format(DateTime.now());
 
     return Scaffold(
       appBar: AppBar(title: Text("Weather App")),
@@ -23,6 +27,12 @@ class HomeScreen extends StatelessWidget {
                         weatherProvider.weather?.city ?? "Unknown City",
                         style: TextStyle(fontSize: 30),
                       ),
+                      SizedBox(height: 8), // Add some spacing
+                      Text(
+                        formattedDate, // Display formatted date
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(height: 8),
                       Text(
                         "${weatherProvider.weather?.temperature?.toStringAsFixed(1) ?? '--'}°C",
                         style: TextStyle(fontSize: 50),
@@ -39,7 +49,7 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          weatherProvider.fetchWeather("Cairo");
+          weatherProvider.fetchWeather("Alexandria");
         },
         child: Icon(Icons.search),
       ),
