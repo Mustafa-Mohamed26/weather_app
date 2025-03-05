@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_app/core/db_helper.dart';
-import 'package:weather_app/service/weather_service.dart';
+import 'package:weather_app/core/service/weather_service.dart';
 import '../models/weather_model.dart';
 
 class WeatherProvider extends ChangeNotifier {
