@@ -25,38 +25,25 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: RadialGradient(
-            colors: [
-              Colors.blueAccent,
-              Colors.white,
-            ],
-            center: Alignment(0.9, -0.9), 
-            radius: 0.8, 
-            stops: [0.2, 1.0],
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 50,
-              ),
-              SizedBox(height: 10),
-              Text(
-                formattedDate, // Display formatted date
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 40),
-              Icon(Icons.sunny, size: 300),
-              SizedBox(width: 10),
-              Row(
-                children: [],
-              )
-            ],
-          ),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 50,
+            ),
+            SizedBox(height: 10),
+            Text(
+              formattedDate, // Display formatted date
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 40),
+            Icon(Icons.sunny, size: 300),
+            SizedBox(width: 10),
+            Row(
+              children: [],
+            )
+          ],
         ),
       ),
     );
