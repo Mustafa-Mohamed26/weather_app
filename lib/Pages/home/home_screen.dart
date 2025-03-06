@@ -1,110 +1,99 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:weather_app/Providers/theme_provider.dart';
+import 'package:weather_app/providers/weather_provider.dart';
+import 'package:weather_app/widgets/current_state_card.dart';
+import 'package:weather_app/widgets/custom_app_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    // Get the WeatherProvider
+    final weatherProvider = Provider.of<WeatherProvider>(context);
+
     // Get the current date and format it
-    String formattedDate = DateFormat(' MMMM d, yyyy').format(DateTime.now());
+    String formattedDate = DateFormat('MMMM d, yyyy').format(DateTime.now());
+
+    // Ensure weather data is available
+    final weather = weatherProvider.weather;
+    final String city = weather?.city ?? "Unknown City";
+    final String? iconCode = weather?.icon;
+
+    // Construct weather icon URL safely
+    final String weatherIconUrl = iconCode != null
+        ? "https://openweathermap.org/img/wn/$iconCode@2x.png"
+        : "";
+
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: Text(
-          "The Name of the City",
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        
-      ),
+      appBar: const CustomAppBar(title: "Current Weather"),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 50,
-            ),
-            SizedBox(height: 10),
             Text(
-              formattedDate, // Display formatted date
-              style: TextStyle(fontSize: 16),
+              city,
+              style: const TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
-            SizedBox(height: 40),
-            Icon(Icons.sunny, size: 300),
-            SizedBox(width: 10),
+            Text(
+              formattedDate,
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 10),
+
+            // Weather Icon (Only display if URL is available)
+            if (iconCode != null)
+              Center(
+                child: Image.network(
+                  weatherIconUrl,
+                  width: 200,
+                  height: 150,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.error, size: 100, color: Colors.red),
+                ),
+              ),
+
+            const SizedBox(height: 20),
+
+            // Row of CurrentStateCards with dynamic values
             Row(
-              children: [],
-            )
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: CurrentStateCard(
+                    title: "Temp",
+                    value: weather?.temperature != null
+                        ? "${weather!.temperature.toInt()}°C"
+                        : "--",
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: CurrentStateCard(
+                    title: "Wind",
+                    value: weather?.windSpeed != null
+                        ? "${weather!.windSpeed} km/h"
+                        : "--",
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: CurrentStateCard(
+                    title: "Humidity",
+                    value: weather?.humidity != null
+                        ? "${weather!.humidity}%"
+                        : "--",
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:intl/intl.dart'; // Import intl package
-// import '../providers/weather_provider.dart';
-
-// class HomeScreen extends StatelessWidget {
-//   const HomeScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final weatherProvider = Provider.of<WeatherProvider>(context);
-
-//     // Get the current date and format it
-//     String formattedDate = DateFormat('EEEE, MMMM d, yyyy').format(DateTime.now());
-
-//     return Scaffold(
-//       appBar: AppBar(title: Text("Weather App")),
-//       body: Center(
-//         child: weatherProvider.isLoading
-//             ? CircularProgressIndicator()
-//             : weatherProvider.weather == null
-//                 ? Text("Enter a city to get weather info")
-//                 : Column(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       Text(
-//                         weatherProvider.weather?.city ?? "Unknown City",
-//                         style: TextStyle(fontSize: 30),
-//                       ),
-//                       SizedBox(height: 8), // Add some spacing
-//                       Text(
-//                         formattedDate, // Display formatted date
-//                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-//                       ),
-//                       SizedBox(height: 8),
-//                       Text(
-//                         "${weatherProvider.weather?.temperature?.toStringAsFixed(1) ?? '--'}°C",
-//                         style: TextStyle(fontSize: 50),
-//                       ),
-//                       Text(weatherProvider.weather?.description ?? "No description"),
-//                       if (weatherProvider.weather?.icon != null)
-//                         Image.network(
-//                           "https://openweathermap.org/img/wn/${weatherProvider.weather!.icon}@2x.png",
-//                         ),
-//                       Text("Humidity: ${weatherProvider.weather?.humidity ?? '--'}%"),
-//                       Text("Wind: ${weatherProvider.weather?.windSpeed ?? '--'} m/s"),
-//                     ],
-//                   ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           weatherProvider.fetchWeather("Alexandria");
-//         },
-//         child: Icon(Icons.search),
-//       ),
-//     );
-//   }
-// }

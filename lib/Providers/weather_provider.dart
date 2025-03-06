@@ -31,8 +31,8 @@ class WeatherProvider extends ChangeNotifier {
 
     try {
       _weather = await _weatherService.fetchWeather(city);
-      await WeatherDatabase.instance.deleteWeather(); // Clear old data
-      await WeatherDatabase.instance.insertWeather(_weather!); // Save new data
+      // await WeatherDatabase.instance.deleteWeather(); // Clear old data
+      // await WeatherDatabase.instance.insertWeather(_weather!); // Save new data
     } catch (e) {
       _weather = await WeatherDatabase.instance.getWeather(); // Load from database if fetch fails
     }

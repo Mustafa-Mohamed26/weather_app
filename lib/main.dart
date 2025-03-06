@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/Pages/home/home_screen.dart';
 import 'package:weather_app/Pages/navigation.dart';
 import 'package:weather_app/Providers/theme_provider.dart';
 import 'package:weather_app/providers/weather_provider.dart';
+import 'package:weather_app/test.dart';
 
 void main() {
   runApp(
@@ -27,6 +29,7 @@ class WeatherApp extends StatelessWidget {
       // theme: ThemeData.light(),
       // darkTheme: ThemeData.dark(),
       // themeMode: themeProvider.themeMode,
+      theme: ThemeData.dark(),
       home: Navigation(),
     );
   }
