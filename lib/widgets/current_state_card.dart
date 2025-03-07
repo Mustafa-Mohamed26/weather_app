@@ -9,7 +9,7 @@ class CurrentStateCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         //width: double.infinity,
-        height: 100,
+        height: 80,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(10),
@@ -19,7 +19,7 @@ class CurrentStateCard extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 18),
             ),
             Text(
               value,

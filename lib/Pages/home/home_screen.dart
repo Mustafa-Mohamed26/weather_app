@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/Providers/weather_five_days_forcast_povider.dart';
 import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/widgets/current_state_card.dart';
 import 'package:weather_app/widgets/custom_app_bar.dart';
@@ -12,12 +13,16 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get the WeatherProvider
     final weatherProvider = Provider.of<WeatherProvider>(context);
+    final weatherFiveDaysForCastProvider =
+        Provider.of<WeatherFiveDaysForCastProvider>(context);
 
     // Get the current date and format it
     String formattedDate = DateFormat('MMMM d, yyyy').format(DateTime.now());
 
     // Ensure weather data is available
     final weather = weatherProvider.weather;
+    final fiveDayForecast = weatherFiveDaysForCastProvider.fiveDayForecast;
+
     final String city = weather?.city ?? "Unknown City";
     final String? iconCode = weather?.icon;
 
@@ -90,6 +95,61 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+
+            const SizedBox(height: 20),
+
+            // Five-Day Forecast Section
+            const Text(
+              "5-Day Forecast",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+
+            Expanded(
+              child: fiveDayForecast.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: fiveDayForecast.length,
+                      itemBuilder: (context, index) {
+                        final forecast = fiveDayForecast[index];
+
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          child: ListTile(
+                            leading: forecast.icon != null
+                                ? Image.network(
+                                    "https://openweathermap.org/img/w/${forecast.icon}.png",
+                                    width: 50,
+                                    height: 50,
+                                    errorBuilder: (context, error,
+                                            stackTrace) =>
+                                        const Icon(Icons.image_not_supported,
+                                            size: 50, color: Colors.grey),
+                                  )
+                                : const Icon(Icons.cloud,
+                                    size: 50, color: Colors.grey),
+                            title: forecast.date != null
+                                ? Text(
+                                    DateFormat('EEEE, MMM d')
+                                        .format(forecast.date),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : const Text("Unknown Date"),
+                            subtitle: Text(
+                              "${forecast.weatherMain} - ${forecast.weatherDescription}",
+                            ),
+                            trailing: Text(
+                              forecast.temperature != null
+                                  ? "${forecast.temperature!.toStringAsFixed(1)}°C"
+                                  : "--",
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : const Center(child: Text("No forecast data available")),
             ),
           ],
         ),
