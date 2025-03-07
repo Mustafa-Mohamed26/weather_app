@@ -12,7 +12,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => WeatherProvider()),
         ChangeNotifierProvider(create: (context) => WeatherFiveDaysForCastProvider()),
-        ChangeNotifierProvider(create: (context) => WeatherTodayProvider()),
+        ChangeNotifierProvider(create: (context) => TodayForecastProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
       ],
       child: WeatherApp(),

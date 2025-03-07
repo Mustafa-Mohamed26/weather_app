@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/Providers/weather_five_days_forecast_provider.dart';
+import 'package:weather_app/Providers/weather_today_forecast_provider.dart';
 import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/widgets/current_state_card.dart';
 import 'package:weather_app/widgets/five_days_state_card.dart';
+import 'package:weather_app/widgets/today_forecast_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,9 +26,12 @@ class _HomeScreenState extends State<HomeScreen> {
           Provider.of<WeatherProvider>(context, listen: false);
       final weatherFiveDaysForCastProvider =
           Provider.of<WeatherFiveDaysForCastProvider>(context, listen: false);
+      final todayForecastProvider =
+          Provider.of<TodayForecastProvider>(context, listen: false);
 
       weatherProvider.fetchWeather("Alexandria");
       weatherFiveDaysForCastProvider.fetchWeather("Alexandria");
+      todayForecastProvider.fetchTodayForecast("Alexandria");
     });
   }
 
@@ -36,10 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final weatherProvider = context.watch<WeatherProvider>();
     final weatherFiveDaysForCastProvider =
         context.watch<WeatherFiveDaysForCastProvider>();
+    final todayForecastProvider = context.watch<TodayForecastProvider>();
 
     // Ensure weather data is available
     final weather = weatherProvider.weather;
     final fiveDayForecast = weatherFiveDaysForCastProvider.fiveDayForecast;
+    final todayForecast = todayForecastProvider.todayForecast;
 
     // Get the current date and format it
     String formattedDate = DateFormat('MMMM d, yyyy').format(DateTime.now());
@@ -145,6 +152,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   : const Center(child: Text("No forecast data available")),
             ),
+
+            const SizedBox(height: 20),
+
+            // Today's Forecast Section
+            const Text(
+              "Today's Forecast",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+
+            todayForecast.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: todayForecast.length,
+                      itemBuilder: (context, index) {
+                        final forecast = todayForecast[index];
+
+                        return TodayForecastCard(
+                          time: DateFormat('hh:mm a').format(forecast.date),
+                          icon: forecast.icon,
+                          weatherMain: forecast.weatherMain,
+                          temperature: forecast.temperature,
+                        );
+                      },
+                    ),
+                  )
+                : const Center(child: Text("No forecast data available")),
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:weather_app/models/weather_forecast_model.dart';
 import 'dart:convert';
 
@@ -38,31 +39,41 @@ class WeatherService {
   }
 
   Future<List<WeatherForecast>> fetchTodayForecast(String city) async {
-    final url =
-        Uri.parse("$baseUrl/forecast?q=$city&appid=$apiKey&units=metric");
+  final url = Uri.parse(
+      "https://api.openweathermap.org/data/2.5/forecast?q=$city&appid=$apiKey&units=metric");
 
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        List<dynamic> list = data["list"];
+  try {
+    final response = await http.get(url);
 
-        // Get today's date
-        final now = DateTime.now();
-        final todayForecasts = list
-            .map((item) => WeatherForecast.fromJson(item))
-            .where((forecast) =>
-                forecast.dateTime.year == now.year &&
-                forecast.dateTime.month == now.month &&
-                forecast.dateTime.day == now.day)
-            .toList();
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      List<dynamic> list = data["list"];
 
-        return todayForecasts;
-      } else {
-        throw Exception("Failed to load today's weather data");
-      }
-    } catch (e) {
-      throw Exception("Error: $e");
+      // Get current UTC time
+      DateTime nowUtc = DateTime.now().toUtc();
+      DateTime nextDayUtc = nowUtc.add(Duration(hours: 24));
+
+      
+
+      // Filter forecasts for the next 24 hours
+      List<WeatherForecast> todayForecasts = list
+          .where((item) {
+            DateTime forecastTime =
+                DateTime.parse(item["dt_txt"]).toUtc(); // Convert to DateTime
+            return forecastTime.isAfter(nowUtc) &&
+                forecastTime.isBefore(nextDayUtc);
+          })
+          .map((item) => WeatherForecast.fromJson(item))
+          .toList();
+
+      
+
+      return todayForecasts;
+    } else {
+      throw Exception("Failed to load weather data");
     }
+  } catch (e) {
+    throw Exception("Error: $e");
   }
+}
 }

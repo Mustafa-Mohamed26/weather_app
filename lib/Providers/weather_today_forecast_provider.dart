@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/core/service/weather_service.dart';
 import 'package:weather_app/models/weather_forecast_model.dart';
 
-class WeatherTodayProvider with ChangeNotifier {
+class TodayForecastProvider with ChangeNotifier {
   final WeatherService _weatherService = WeatherService();
   List<WeatherForecast> _todayForecast = [];
   bool _isLoading = false;
@@ -20,7 +20,7 @@ class WeatherTodayProvider with ChangeNotifier {
     try {
       _todayForecast = await _weatherService.fetchTodayForecast(city);
     } catch (e) {
-      _errorMessage = e.toString();
+      _errorMessage = "Failed to load today's forecast";
     }
 
     _isLoading = false;
