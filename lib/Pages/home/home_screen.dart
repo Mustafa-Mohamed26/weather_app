@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:weather_app/Providers/weather_five_days_forcast_provider.dart';
+import 'package:weather_app/Providers/weather_five_days_forecast_provider.dart';
 import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/widgets/current_state_card.dart';
 import 'package:weather_app/widgets/five_days_state_card.dart';
@@ -16,16 +16,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late WeatherProvider weatherProvider;
-  late WeatherFiveDaysForCastProvider weatherFiveDaysForCastProvider;
-
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
-      weatherFiveDaysForCastProvider =
+    Future.delayed(Duration.zero, () {
+      final weatherProvider =
+          Provider.of<WeatherProvider>(context, listen: false);
+      final weatherFiveDaysForCastProvider =
           Provider.of<WeatherFiveDaysForCastProvider>(context, listen: false);
+
       weatherProvider.fetchWeather("Alexandria");
       weatherFiveDaysForCastProvider.fetchWeather("Alexandria");
     });
@@ -34,9 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // Get the WeatherProvider
-    weatherProvider = Provider.of<WeatherProvider>(context);
-    weatherFiveDaysForCastProvider =
-        Provider.of<WeatherFiveDaysForCastProvider>(context);
+    final weatherProvider = context.watch<WeatherProvider>();
+    final weatherFiveDaysForCastProvider =
+        context.watch<WeatherFiveDaysForCastProvider>();
 
     // Ensure weather data is available
     final weather = weatherProvider.weather;
@@ -55,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.only(top: 50),
+        margin: const EdgeInsets.only(top: 50),
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

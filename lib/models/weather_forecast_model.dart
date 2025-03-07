@@ -27,4 +27,6 @@ class WeatherForecast {
       icon: json["weather"][0]["icon"],
     );
   }
+
+  get dateTime => null;
 }

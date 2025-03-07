@@ -4,7 +4,7 @@ import 'package:weather_app/Pages/home/forecast_report_screen.dart';
 import 'package:weather_app/Pages/home/home_screen.dart';
 import 'package:weather_app/Pages/home/search_screen.dart';
 import 'package:weather_app/Pages/home/setting_screen.dart';
-import 'package:weather_app/Providers/weather_five_days_forcast_provider.dart';
+import 'package:weather_app/Providers/weather_five_days_forecast_provider.dart';
 import 'package:weather_app/providers/weather_provider.dart';
 
 class Navigation extends StatefulWidget {
@@ -25,9 +25,6 @@ class _NavigationState extends State<Navigation> {
   ];
   @override
   Widget build(BuildContext context) {
-    final weatherProvider = Provider.of<WeatherProvider>(context);
-    final weatherFiveDaysForCastProvider =
-        Provider.of<WeatherFiveDaysForCastProvider>(context);
     return Scaffold(
       body: IndexedStack(
         // IndexedStack
@@ -43,11 +40,6 @@ class _NavigationState extends State<Navigation> {
           setState(() {
             _selectedIndex = index;
           });
-          // Call fetchWeather when 'Home' is tapped
-          if (index == 0) {
-            weatherProvider.fetchWeather("Alexandria");
-            weatherFiveDaysForCastProvider.fetchWeather("Alexandria");
-          }
         },
         selectedItemColor: Colors.blue, // Color for selected icon
         unselectedItemColor: Colors.grey, // Color for unselected icons

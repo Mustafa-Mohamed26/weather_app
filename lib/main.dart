@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/Pages/navigation.dart';
 import 'package:weather_app/Providers/theme_provider.dart';
-import 'package:weather_app/Providers/weather_five_days_forcast_provider.dart';
+import 'package:weather_app/Providers/weather_five_days_forecast_provider.dart';
+import 'package:weather_app/Providers/weather_today_forecast_provider.dart';
 import 'package:weather_app/providers/weather_provider.dart';
 
 void main() {
@@ -11,6 +12,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => WeatherProvider()),
         ChangeNotifierProvider(create: (context) => WeatherFiveDaysForCastProvider()),
+        ChangeNotifierProvider(create: (context) => WeatherTodayProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
       ],
       child: WeatherApp(),
