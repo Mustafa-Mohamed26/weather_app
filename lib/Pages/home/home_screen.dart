@@ -1,27 +1,49 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:weather_app/Providers/weather_five_days_forcast_povider.dart';
+import 'package:weather_app/Providers/weather_five_days_forcast_provider.dart';
 import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/widgets/current_state_card.dart';
-import 'package:weather_app/widgets/custom_app_bar.dart';
+import 'package:weather_app/widgets/five_days_state_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late WeatherProvider weatherProvider;
+  late WeatherFiveDaysForCastProvider weatherFiveDaysForCastProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
+      weatherFiveDaysForCastProvider =
+          Provider.of<WeatherFiveDaysForCastProvider>(context, listen: false);
+      weatherProvider.fetchWeather("Alexandria");
+      weatherFiveDaysForCastProvider.fetchWeather("Alexandria");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     // Get the WeatherProvider
-    final weatherProvider = Provider.of<WeatherProvider>(context);
-    final weatherFiveDaysForCastProvider =
+    weatherProvider = Provider.of<WeatherProvider>(context);
+    weatherFiveDaysForCastProvider =
         Provider.of<WeatherFiveDaysForCastProvider>(context);
-
-    // Get the current date and format it
-    String formattedDate = DateFormat('MMMM d, yyyy').format(DateTime.now());
 
     // Ensure weather data is available
     final weather = weatherProvider.weather;
     final fiveDayForecast = weatherFiveDaysForCastProvider.fiveDayForecast;
+
+    // Get the current date and format it
+    String formattedDate = DateFormat('MMMM d, yyyy').format(DateTime.now());
 
     final String city = weather?.city ?? "Unknown City";
     final String? iconCode = weather?.icon;
@@ -32,8 +54,8 @@ class HomeScreen extends StatelessWidget {
         : "";
 
     return Scaffold(
-      appBar: const CustomAppBar(title: "Current Weather"),
-      body: Padding(
+      body: Container(
+        margin: EdgeInsets.only(top: 50),
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,29 +135,12 @@ class HomeScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final forecast = fiveDayForecast[index];
 
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 5),
-                          child: ListTile(
-                            leading: Image.network(
-                              "https://openweathermap.org/img/w/${forecast.icon}.png",
-                              width: 50,
-                              height: 50,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.image_not_supported,
-                                      size: 50, color: Colors.grey),
-                            ),
-                            title: Text(
-                              DateFormat('EEEE, MMM d').format(forecast.date),
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(
-                                "${forecast.weatherMain} - ${forecast.weatherDescription}"),
-                            trailing: Text(
-                              "${forecast.temperature.toStringAsFixed(1)}°C",
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ),
+                        return FiveDaysStateCard(
+                          date: forecast.date,
+                          icon: forecast.icon,
+                          weatherMain: forecast.weatherMain,
+                          weatherDescription: forecast.weatherDescription,
+                          temperature: forecast.temperature,
                         );
                       },
                     )
