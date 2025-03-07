@@ -116,33 +116,23 @@ class HomeScreen extends StatelessWidget {
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           child: ListTile(
-                            leading: forecast.icon != null
-                                ? Image.network(
-                                    "https://openweathermap.org/img/w/${forecast.icon}.png",
-                                    width: 50,
-                                    height: 50,
-                                    errorBuilder: (context, error,
-                                            stackTrace) =>
-                                        const Icon(Icons.image_not_supported,
-                                            size: 50, color: Colors.grey),
-                                  )
-                                : const Icon(Icons.cloud,
-                                    size: 50, color: Colors.grey),
-                            title: forecast.date != null
-                                ? Text(
-                                    DateFormat('EEEE, MMM d')
-                                        .format(forecast.date),
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                : const Text("Unknown Date"),
-                            subtitle: Text(
-                              "${forecast.weatherMain} - ${forecast.weatherDescription}",
+                            leading: Image.network(
+                              "https://openweathermap.org/img/w/${forecast.icon}.png",
+                              width: 50,
+                              height: 50,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Icon(Icons.image_not_supported,
+                                      size: 50, color: Colors.grey),
                             ),
+                            title: Text(
+                              DateFormat('EEEE, MMM d').format(forecast.date),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                                "${forecast.weatherMain} - ${forecast.weatherDescription}"),
                             trailing: Text(
-                              forecast.temperature != null
-                                  ? "${forecast.temperature!.toStringAsFixed(1)}°C"
-                                  : "--",
+                              "${forecast.temperature.toStringAsFixed(1)}°C",
                               style: const TextStyle(fontSize: 16),
                             ),
                           ),
