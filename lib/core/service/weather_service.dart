@@ -39,8 +39,8 @@ class WeatherService {
   }
 
   Future<List<WeatherForecast>> fetchTodayForecast(String city) async {
-    final url = Uri.parse(
-        "https://api.openweathermap.org/data/2.5/forecast?q=$city&appid=$apiKey&units=metric");
+    final url =
+        Uri.parse("$baseUrl/forecast?q=$city&appid=$apiKey");
 
     try {
       final response = await http.get(url);
@@ -53,7 +53,7 @@ class WeatherService {
         DateTime nowUtc = DateTime.now().toUtc();
         DateTime nextDayUtc = nowUtc.add(Duration(hours: 24));
 
-        // Get the next 24-hour forecasts 
+        // Filter only today's forecasts (next 24 hours)
         List<WeatherForecast> todayForecasts = list
             .where((item) {
               DateTime forecastTime = DateTime.parse(item["dt_txt"]).toUtc();
