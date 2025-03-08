@@ -39,41 +39,36 @@ class WeatherService {
   }
 
   Future<List<WeatherForecast>> fetchTodayForecast(String city) async {
-  final url = Uri.parse(
-      "https://api.openweathermap.org/data/2.5/forecast?q=$city&appid=$apiKey&units=metric");
+    final url = Uri.parse(
+        "https://api.openweathermap.org/data/2.5/forecast?q=$city&appid=$apiKey&units=metric");
 
-  try {
-    final response = await http.get(url);
+    try {
+      final response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      List<dynamic> list = data["list"];
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        List<dynamic> list = data["list"];
 
-      // Get current UTC time
-      DateTime nowUtc = DateTime.now().toUtc();
-      DateTime nextDayUtc = nowUtc.add(Duration(hours: 24));
+        // Get current UTC time
+        DateTime nowUtc = DateTime.now().toUtc();
+        DateTime nextDayUtc = nowUtc.add(Duration(hours: 24));
 
-      
+        // Get the next 24-hour forecasts 
+        List<WeatherForecast> todayForecasts = list
+            .where((item) {
+              DateTime forecastTime = DateTime.parse(item["dt_txt"]).toUtc();
+              return forecastTime.isAfter(nowUtc) &&
+                  forecastTime.isBefore(nextDayUtc);
+            })
+            .map((item) => WeatherForecast.fromJson(item))
+            .toList();
 
-      // Filter forecasts for the next 24 hours
-      List<WeatherForecast> todayForecasts = list
-          .where((item) {
-            DateTime forecastTime =
-                DateTime.parse(item["dt_txt"]).toUtc(); // Convert to DateTime
-            return forecastTime.isAfter(nowUtc) &&
-                forecastTime.isBefore(nextDayUtc);
-          })
-          .map((item) => WeatherForecast.fromJson(item))
-          .toList();
-
-      
-
-      return todayForecasts;
-    } else {
-      throw Exception("Failed to load weather data");
+        return todayForecasts;
+      } else {
+        throw Exception("Failed to load weather data");
+      }
+    } catch (e) {
+      throw Exception("Error: $e");
     }
-  } catch (e) {
-    throw Exception("Error: $e");
   }
-}
 }

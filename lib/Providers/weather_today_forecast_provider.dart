@@ -15,15 +15,15 @@ class TodayForecastProvider with ChangeNotifier {
   Future<void> fetchTodayForecast(String city) async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
+    notifyListeners(); // Notify UI to show loading state
 
     try {
       _todayForecast = await _weatherService.fetchTodayForecast(city);
     } catch (e) {
-      _errorMessage = "Failed to load today's forecast";
+      _errorMessage = "Failed to load today's forecast: ${e.toString()}";
     }
 
     _isLoading = false;
-    notifyListeners();
+    notifyListeners(); // Ensure UI updates after error/loading state
   }
 }
