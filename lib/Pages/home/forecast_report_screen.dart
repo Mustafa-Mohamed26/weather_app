@@ -49,78 +49,88 @@ class _ForecastReportScreenState extends State<ForecastReportScreen> {
         title: "Forecast report",
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Today's Forecast",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            todayForecast.isNotEmpty
-                ? SizedBox(
-                    height: 110, // Adjust height based on your card size
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16), // Consistent padding
-                      itemCount: todayForecast.length,
-                      itemBuilder: (context, index) {
-                        final forecast = todayForecast[index];
-                        final isFirst =
-                            index == 0; // Check if it's the first item
-
-                        return Padding(
-                          padding:
-                              const EdgeInsets.only(right: 10), // Equal spacing
-                          child: TodayForecastCard(
-                            time: DateFormat('hh:mm a').format(forecast.date),
-                            icon: forecast.icon,
-                            weatherMain: forecast.weatherMain,
-                            temperature: forecast.temperature,
-                            backgroundColor:
-                                isFirst ? Colors.orange : Colors.blueAccent,
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                : const Center(
-                    child: Text("No forecast data available"),
-                  ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "5-Day Forecast",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  Expanded(
-                    child: fiveDayForecast.isNotEmpty
-                        ? ListView.builder(
-                            itemCount: fiveDayForecast.length,
-                            itemBuilder: (context, index) {
-                              final forecast = fiveDayForecast[index];
-                              return FiveDaysStateCard(
-                                date: forecast.date,
-                                icon: forecast.icon,
-                                weatherMain: forecast.weatherMain,
-                                weatherDescription: forecast.weatherDescription,
-                                temperature: forecast.temperature,
-                              );
-                            },
-                          )
-                        : const Center(
-                            child: Text("No forecast data available")),
-                  ),
-                ],
+        padding:
+            const EdgeInsets.symmetric(horizontal: 8), // Consistent padding
+        child: Container(
+          padding: const EdgeInsets.only(top: 50),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Today's Forecast",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              const SizedBox(height: 10),
+              todayForecast.isNotEmpty
+                  ? SizedBox(
+                      height: 110, // Adjust height based on your card size
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16), // Consistent padding
+                        itemCount: todayForecast.length,
+                        itemBuilder: (context, index) {
+                          final forecast = todayForecast[index];
+                          final isFirst =
+                              index == 0; // Check if it's the first item
+
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                right: 10), // Equal spacing
+                            child: TodayForecastCard(
+                              time: DateFormat('hh:mm a').format(forecast.date),
+                              icon: forecast.icon,
+                              weatherMain: forecast.weatherMain,
+                              temperature: forecast.temperature,
+                              backgroundColor:
+                                  isFirst ? Colors.orange : Colors.blueAccent,
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  : const Center(
+                      child: Text("No forecast data available"),
+                    ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "5-Day Forecast",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Expanded(
+                      child: fiveDayForecast.isNotEmpty
+                          ? ListView.builder(
+                              itemCount: fiveDayForecast.length,
+                              itemBuilder: (context, index) {
+                                final forecast = fiveDayForecast[index];
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 4), // Adds spacing
+                                  child: FiveDaysStateCard(
+                                    date: forecast.date,
+                                    icon: forecast.icon,
+                                    weatherMain: forecast.weatherMain,
+                                    weatherDescription:
+                                        forecast.weatherDescription,
+                                    temperature: forecast.temperature,
+                                  ),
+                                );
+                              },
+                            )
+                          : const Center(
+                              child: Text("No forecast data available")),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

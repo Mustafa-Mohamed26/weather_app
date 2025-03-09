@@ -10,10 +10,7 @@ class CurrentStateCard extends StatelessWidget {
     return Container(
         //width: double.infinity,
         height: 80,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(10),
-        ),
+        
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
