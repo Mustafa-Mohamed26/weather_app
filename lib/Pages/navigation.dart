@@ -17,9 +17,9 @@ class _NavigationState extends State<Navigation> {
 
   final List<Widget> _pages = [
     HomeScreen(),
+    SearchScreen(),
     ForecastReportScreen(),
     SettingScreen(),
-    SearchScreen(),
   ];
   @override
   Widget build(BuildContext context) {

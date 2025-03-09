@@ -39,13 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     // Get the WeatherProvider
     final weatherProvider = context.watch<WeatherProvider>();
-    final weatherFiveDaysForCastProvider =
-        context.watch<WeatherFiveDaysForCastProvider>();
     final todayForecastProvider = context.watch<TodayForecastProvider>();
 
     // Ensure weather data is available
     final weather = weatherProvider.weather;
-    final fiveDayForecast = weatherFiveDaysForCastProvider.fiveDayForecast;
     final todayForecast = todayForecastProvider.todayForecast;
 
     // Get the current date and format it
@@ -60,9 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
         : "";
 
     return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.only(top: 50),
-        padding: const EdgeInsets.all(16),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: 16, vertical: 40), // Consistent padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -71,86 +68,69 @@ class _HomeScreenState extends State<HomeScreen> {
               style: const TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
+            const SizedBox(height: 10),
             Text(
               formattedDate,
               style: const TextStyle(fontSize: 16),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
 
-            // Weather Icon (Only display if URL is available)
+            // Weather Icon (Covers the page)
             if (iconCode != null)
-              Center(
-                child: Image.network(
-                  weatherIconUrl,
-                  width: 200,
-                  height: 150,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.error, size: 100, color: Colors.red),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10), // Consistent padding
+                  child: Center(
+                    child: Image.network(
+                      weatherIconUrl,
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.error, size: 100, color: Colors.red),
+                    ),
+                  ),
                 ),
               ),
 
             const SizedBox(height: 20),
 
-            // Row of CurrentStateCards with dynamic values
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: CurrentStateCard(
-                    title: "Temp",
-                    value: weather?.temperature != null
-                        ? "${weather!.temperature.toInt()}°C"
-                        : "--",
+            // Row of CurrentStateCards with equal padding
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10), // Equal padding
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: CurrentStateCard(
+                      title: "Temp",
+                      value: weather?.temperature != null
+                          ? "${weather!.temperature.toInt()}°C"
+                          : "--",
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: CurrentStateCard(
-                    title: "Wind",
-                    value: weather?.windSpeed != null
-                        ? "${weather!.windSpeed} km/h"
-                        : "--",
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: CurrentStateCard(
+                      title: "Wind",
+                      value: weather?.windSpeed != null
+                          ? "${weather!.windSpeed} km/h"
+                          : "--",
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: CurrentStateCard(
-                    title: "Humidity",
-                    value: weather?.humidity != null
-                        ? "${weather!.humidity}%"
-                        : "--",
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: CurrentStateCard(
+                      title: "Humidity",
+                      value: weather?.humidity != null
+                          ? "${weather!.humidity}%"
+                          : "--",
+                    ),
                   ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 20),
-
-            // Five-Day Forecast Section
-            const Text(
-              "5-Day Forecast",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-
-            Expanded(
-              child: fiveDayForecast.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: fiveDayForecast.length,
-                      itemBuilder: (context, index) {
-                        final forecast = fiveDayForecast[index];
-
-                        return FiveDaysStateCard(
-                          date: forecast.date,
-                          icon: forecast.icon,
-                          weatherMain: forecast.weatherMain,
-                          weatherDescription: forecast.weatherDescription,
-                          temperature: forecast.temperature,
-                        );
-                      },
-                    )
-                  : const Center(child: Text("No forecast data available")),
+                ],
+              ),
             ),
 
             const SizedBox(height: 20),
@@ -163,31 +143,34 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 10),
 
             todayForecast.isNotEmpty
-    ? SizedBox(
-        height: 120, // Adjust height based on your card size
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal, // Enable horizontal scrolling
-          padding: const EdgeInsets.all(8),
-          itemCount: todayForecast.length,
-          itemBuilder: (context, index) {
-            final forecast = todayForecast[index];
-            final isFirst = index == 0; // Check if it's the first item
+                ? SizedBox(
+                    height: 120, // Adjust height based on your card size
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16), // Consistent padding
+                      itemCount: todayForecast.length,
+                      itemBuilder: (context, index) {
+                        final forecast = todayForecast[index];
+                        final isFirst =
+                            index == 0; // Check if it's the first item
 
-            return Padding(
-              padding: const EdgeInsets.only(right: 8), // Add spacing between items
-              child: TodayForecastCard(
-                time: DateFormat('hh:mm a').format(forecast.date),
-                icon: forecast.icon,
-                weatherMain: forecast.weatherMain,
-                temperature: forecast.temperature,
-                backgroundColor: isFirst ? Colors.orange : Colors.blueAccent, // Change color for first item
-              ),
-            );
-          },
-        ),
-      )
-    : const Center(child: Text("No forecast data available")),
-
+                        return Padding(
+                          padding:
+                              const EdgeInsets.only(right: 10), // Equal spacing
+                          child: TodayForecastCard(
+                            time: DateFormat('hh:mm a').format(forecast.date),
+                            icon: forecast.icon,
+                            weatherMain: forecast.weatherMain,
+                            temperature: forecast.temperature,
+                            backgroundColor:
+                                isFirst ? Colors.orange : Colors.blueAccent,
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : const Center(child: Text("No forecast data available")),
           ],
         ),
       ),
