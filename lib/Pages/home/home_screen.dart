@@ -163,23 +163,31 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 10),
 
             todayForecast.isNotEmpty
-                ? Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: todayForecast.length,
-                      itemBuilder: (context, index) {
-                        final forecast = todayForecast[index];
+    ? SizedBox(
+        height: 120, // Adjust height based on your card size
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+          padding: const EdgeInsets.all(8),
+          itemCount: todayForecast.length,
+          itemBuilder: (context, index) {
+            final forecast = todayForecast[index];
+            final isFirst = index == 0; // Check if it's the first item
 
-                        return TodayForecastCard(
-                          time: DateFormat('hh:mm a').format(forecast.date),
-                          icon: forecast.icon,
-                          weatherMain: forecast.weatherMain,
-                          temperature: forecast.temperature,
-                        );
-                      },
-                    ),
-                  )
-                : const Center(child: Text("No forecast data available")),
+            return Padding(
+              padding: const EdgeInsets.only(right: 8), // Add spacing between items
+              child: TodayForecastCard(
+                time: DateFormat('hh:mm a').format(forecast.date),
+                icon: forecast.icon,
+                weatherMain: forecast.weatherMain,
+                temperature: forecast.temperature,
+                backgroundColor: isFirst ? Colors.orange : Colors.blueAccent, // Change color for first item
+              ),
+            );
+          },
+        ),
+      )
+    : const Center(child: Text("No forecast data available")),
+
           ],
         ),
       ),

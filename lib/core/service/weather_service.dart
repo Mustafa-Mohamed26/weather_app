@@ -39,8 +39,7 @@ class WeatherService {
   }
 
   Future<List<WeatherForecast>> fetchTodayForecast(String city) async {
-    final url =
-        Uri.parse("$baseUrl/forecast?q=$city&appid=$apiKey");
+    final url = Uri.parse("$baseUrl/forecast?q=$city&appid=$apiKey");
 
     try {
       final response = await http.get(url);
