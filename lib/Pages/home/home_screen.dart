@@ -136,15 +136,19 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
 
             // Today's Forecast Section
-            const Text(
-              "Today's Forecast",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Row(
+              children: [
+                const Text(
+                  "Today's Forecast",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
             const SizedBox(height: 10),
 
             todayForecast.isNotEmpty
                 ? SizedBox(
-                    height: 120, // Adjust height based on your card size
+                    height: 110, // Adjust height based on your card size
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(

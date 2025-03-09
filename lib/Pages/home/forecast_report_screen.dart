@@ -60,7 +60,7 @@ class _ForecastReportScreenState extends State<ForecastReportScreen> {
             const SizedBox(height: 10),
             todayForecast.isNotEmpty
                 ? SizedBox(
-                    height: 120, // Adjust height based on your card size
+                    height: 110, // Adjust height based on your card size
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(
