@@ -35,7 +35,7 @@ class Test extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        "${weatherProvider.weather?.temperature?.toStringAsFixed(1) ?? '--'}°C",
+                        "${weatherProvider.weather?.temperature.toStringAsFixed(1) ?? '--'}°C",
                         style: TextStyle(fontSize: 50),
                       ),
                       Text(weatherProvider.weather?.description ?? "No description"),
