@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Get the WeatherProviderd
+    // Get the WeatherProvider
     final weatherProvider = context.watch<WeatherProvider>();
     final todayForecastProvider = context.watch<TodayForecastProvider>();
 
