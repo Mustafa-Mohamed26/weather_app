@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/widgets/weather_card.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -13,7 +12,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: WeatherCard(city: "Cairo"),
+        child: Text("data")
       ),
     );
   }
