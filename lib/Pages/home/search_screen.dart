@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/Providers/weather_provider.dart';
+import 'package:weather_app/widgets/current_state_card.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -13,6 +14,22 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   String? _searchedCity;
+
+  final List<String> randomCities = ["New York", "London", "Tokyo", "Sydney"];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchRandomCitiesWeather();
+  }
+
+  Future<void> _fetchRandomCitiesWeather() async {
+    final weatherProvider =
+        Provider.of<WeatherProvider>(context, listen: false);
+    for (String city in randomCities) {
+      await weatherProvider.fetchWeather(city);
+    }
+  }
 
   Future<void> _searchCity(String city) async {
     if (city.isEmpty) return;
@@ -52,7 +69,7 @@ class _SearchScreenState extends State<SearchScreen> {
         title: const Text("Search Weather"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -77,79 +94,140 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Loading Indicator
-            if (weatherProvider.isLoading)
-              const Center(child: CircularProgressIndicator()),
+            // GridView for Random Cities
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // 2 cards per row
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 3 / 2, // Adjust card height
+                ),
+                itemCount: randomCities.length,
+                itemBuilder: (context, index) {
+                  final city = randomCities[index];
+                  final cityWeather = weatherProvider.weather;
+
+                  return Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            city,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          if (cityWeather != null)
+                            Column(
+                              children: [
+                                Text(
+                                  "Temp: ${cityWeather.temperature?.toInt() ?? '--'}°C",
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  "Wind: ${cityWeather.windSpeed ?? '--'} km/h",
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            )
+                          else
+                            const Text(
+                              "No data",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            const SizedBox(height: 20),
 
             // Weather Data Display
-            if (weather != null && !weatherProvider.isLoading)
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      city,
-                      style: const TextStyle(
-                        fontSize: 38,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
+            if (weatherProvider.isLoading)
+              const Center(child: CircularProgressIndicator())
+            else if (weather != null)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    city,
+                    style: const TextStyle(
+                      fontSize: 38,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      formattedDate,
-                      style: const TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    formattedDate,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Weather Icon
+                  if (iconCode != null)
+                    Image.network(
+                      weatherIconUrl,
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.error, size: 100, color: Colors.red),
                     ),
-                    const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                    // Weather Icon
-                    if (iconCode != null)
-                      Image.network(
-                        weatherIconUrl,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.error,
-                                size: 100, color: Colors.red),
-                      ),
-                    const SizedBox(height: 20),
-
-                    // Weather Details
-                    Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Temperature: ${weather.temperature?.toInt() ?? '--'}°C",
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              "Wind Speed: ${weather.windSpeed ?? '--'} km/h",
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              "Humidity: ${weather.humidity ?? '--'}%",
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
+                  // Current Weather Details
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: CurrentStateCard(
+                            title: "Temp",
+                            value: weather.temperature != null
+                                ? "${weather.temperature!.toInt()}°C"
+                                : "--",
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: CurrentStateCard(
+                            title: "Wind",
+                            value: weather.windSpeed != null
+                                ? "${weather.windSpeed} km/h"
+                                : "--",
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: CurrentStateCard(
+                            title: "Humidity",
+                            value: weather.humidity != null
+                                ? "${weather.humidity}%"
+                                : "--",
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-
-            // No Data Message
-            if (weather == null && !weatherProvider.isLoading)
+                  ),
+                ],
+              )
+            else
               const Center(
                 child: Text(
                   "No data available. Please search for a city.",
