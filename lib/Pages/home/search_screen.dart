@@ -20,7 +20,8 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchRandomCitiesWeather();
+    // Use Future.delayed to defer the call to fetch weather data
+    Future.delayed(Duration.zero, _fetchRandomCitiesWeather);
   }
 
   Future<void> _fetchRandomCitiesWeather() async {
@@ -34,18 +35,12 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> _searchCity(String city) async {
     if (city.isEmpty) return;
 
-    try {
-      final weatherProvider =
-          Provider.of<WeatherProvider>(context, listen: false);
-      await weatherProvider.fetchWeather(city);
-      setState(() {
-        _searchedCity = city;
-      });
-    } catch (e) {
-      setState(() {
-        _searchedCity = null;
-      });
-    }
+    final weatherProvider =
+        Provider.of<WeatherProvider>(context, listen: false);
+    await weatherProvider.fetchWeather(city);
+    setState(() {
+      _searchedCity = city;
+    });
   }
 
   @override
